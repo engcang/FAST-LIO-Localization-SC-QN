@@ -10,3 +10,6 @@
 [submodule "third_party/nano_gicp"]
 	path = third_party/nano_gicp
 	url = https://github.com/engcang/nano_gicp
+[submodule "third_party/scancontext"]
+	path = third_party/scancontext
+	url = https://github.com/engcang/scancontext_tro/

@@ -1,10 +1,12 @@
-# FAST-LIO-Localization-QN
-+ This repository is a map-based localization implementation combining [FAST-LIO2](https://github.com/hku-mars/FAST_LIO) as an odometry with [Quatro](https://quatro-plusplus.github.io/) and [Nano-GICP module](https://github.com/engcang/nano_gicp) as a map matching method
+# FAST-LIO-Localization-SC-QN
++ This repository is a map-based localization implementation combining [FAST-LIO2](https://github.com/hku-mars/FAST_LIO) as an odometry with [Quatro](https://quatro-plusplus.github.io/) and [Nano-GICP module](https://github.com/engcang/nano_gicp) as a map matching method, and with [ScanContext](https://github.com/gisbi-kim/scancontext_tro) as a loop candidate detection method
     + [Quatro](https://quatro-plusplus.github.io/) - fast, accurate and robust global registration which provides great initial guess of transform
     + [Quatro module](https://github.com/engcang/quatro) - `Quatro` as a module, can be easily used in other packages
     + [Nano-GICP module](https://github.com/engcang/nano_gicp) - fast ICP combining [FastGICP](https://github.com/SMRT-AIST/fast_gicp) + [NanoFLANN](https://github.com/jlblancoc/nanoflann)
+    + [ScanContext](https://github.com/gisbi-kim/scancontext_tro) - a global descriptor for LiDAR point cloud, here it is used as loop candidate pair detection
 + Note: similar repositories already exist
     + [FAST_LIO_LOCALIZATION](https://github.com/HViktorTsoi/FAST_LIO_LOCALIZATION): FAST-LIO2 + Open3D's ICP
+    + [FAST-LIO-Localization-QN](https://github.com/engcang/FAST-LIO-Localization-QN): FAST-LIO2 + Quatro + Nano-GICP
 + Note2: main code is modularized and hence can be combined with any other LIO / LO
 + Note3: this repo is to apply `Quatro` in localization. `Quatro` can be worked in scan-to-scan matching or submap-to-submap matching but not scan-to-submap, i.e., ***the numbers of pointclouds to be matched should be similar.***
 + Note4: **saved map file** is needed. The map should be in `.bag` format. This `.bag` files can be built with [FAST-LIO-SAM-QN](https://github.com/engcang/FAST-LIO-SAM-QN) and [FAST-LIO-SAM](https://github.com/engcang/FAST-LIO-SAM)
@@ -13,6 +15,11 @@
 
 <br>
 
+## Main difference between FAST-LIO-Localization-QN and FAST-LIO-Localization-SC-QN
++ FAST-LIO-Localization-QN sets loop candidate pair as (current keyframe, the closest and old enough keyframe saved in the map data)
++ FAST-LIO-Localization-SC-QN gets loop candidate pair from ScanContext
+
+<br>
 
 ## Dependencies
 + `C++` >= 17, `OpenMP` >= 4.5, `CMake` >= 3.10.0, `Eigen` >= 3.2, `Boost` >= 1.54
@@ -34,7 +41,7 @@
 + Get the code and then build the main code.
     ```shell
     cd ~/your_workspace/src
-    git clone https://github.com/engcang/FAST-LIO-Localization-QN --recursive
+    git clone https://github.com/engcang/FAST-LIO-Localization-SC-QN --recursive
 
     cd ~/your_workspace
     # nano_gicp, quatro first
@@ -46,13 +53,13 @@
     ```
 + Then run
     ```shell
-    roslaunch fast_lio_localization_qn run.launch lidar:=ouster
-    roslaunch fast_lio_localization_qn run.launch lidar:=velodyne
-    roslaunch fast_lio_localization_qn run.launch lidar:=livox
+    roslaunch fast_lio_localization_sc_qn run.launch lidar:=ouster
+    roslaunch fast_lio_localization_sc_qn run.launch lidar:=velodyne
+    roslaunch fast_lio_localization_sc_qn run.launch lidar:=livox
     ```
 + Change config files in
     + third_party/`FAST_LIO`/config
-    + fast_lio_localization_qn/config
+    + fast_lio_localization_sc_qn/config
 
 <br>
 
@@ -67,7 +74,3 @@
     + visualize all
 
 <br>
-
-## Memo
-+ `Quatro` module fixed for empty matches
-+ `Quatro` module is updated with `optimizedMatching` which limits the number of correspondences and increased the speed

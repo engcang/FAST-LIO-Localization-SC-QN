@@ -31,7 +31,7 @@ PosePcdReduced::PosePcdReduced(const geometry_msgs::PoseStamped& pose_in, const 
   idx = idx_in;
 }
 
-FastLioLocalizationQnClass::FastLioLocalizationQnClass(const ros::NodeHandle& n_private) : m_nh(n_private)
+FastLioLocalizationScQnClass::FastLioLocalizationScQnClass(const ros::NodeHandle& n_private) : m_nh(n_private)
 {
   ////// ROS params
   // temp vars, only used in constructor
@@ -91,9 +91,10 @@ FastLioLocalizationQnClass::FastLioLocalizationQnClass(const ros::NodeHandle& n_
   m_nano_gicp.setRANSACOutlierRejectionThreshold(ransac_outlier_rejection_threshold_);
   // quatro init
   m_quatro_handler = std::make_shared<quatro<PointType>>(fpfh_normal_radius_, fpfh_radius_, noise_bound_, rot_gnc_factor_, rot_cost_diff_thr_,
-                                                        quatro_max_iter_, estimat_scale_, use_optimized_matching_, quatro_distance_threshold_, quatro_max_corres_);
+                                                         quatro_max_iter_, estimat_scale_, use_optimized_matching_, quatro_distance_threshold_, quatro_max_corres_);
   // Load map
   loadMap(saved_map_path_);
+  ROS_WARN("Saved map loaded...");
 
   ////// ROS things
   m_odom_path.header.frame_id = m_map_frame;
@@ -115,9 +116,9 @@ FastLioLocalizationQnClass::FastLioLocalizationQnClass(const ros::NodeHandle& n_
   m_sub_odom = std::make_shared<message_filters::Subscriber<nav_msgs::Odometry>>(m_nh, "/Odometry", 10);
   m_sub_pcd = std::make_shared<message_filters::Subscriber<sensor_msgs::PointCloud2>>(m_nh, "/cloud_registered", 10);
   m_sub_odom_pcd_sync = std::make_shared<message_filters::Synchronizer<odom_pcd_sync_pol>>(odom_pcd_sync_pol(10), *m_sub_odom, *m_sub_pcd);
-  m_sub_odom_pcd_sync->registerCallback(boost::bind(&FastLioLocalizationQnClass::odomPcdCallback, this, _1, _2));
+  m_sub_odom_pcd_sync->registerCallback(boost::bind(&FastLioLocalizationScQnClass::odomPcdCallback, this, _1, _2));
   // Timers at the end
-  m_match_timer = m_nh.createTimer(ros::Duration(1/map_match_hz_), &FastLioLocalizationQnClass::matchingTimerFunc, this);
+  m_match_timer = m_nh.createTimer(ros::Duration(1/map_match_hz_), &FastLioLocalizationScQnClass::matchingTimerFunc, this);
   
   ROS_WARN("Main class, starting node...");
 }

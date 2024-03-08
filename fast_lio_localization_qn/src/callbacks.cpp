@@ -1,7 +1,7 @@
 #include "main.h"
 
 
-void FastLioLocalizationQnClass::odomPcdCallback(const nav_msgs::OdometryConstPtr& odom_msg, const sensor_msgs::PointCloud2ConstPtr& pcd_msg)
+void FastLioLocalizationScQnClass::odomPcdCallback(const nav_msgs::OdometryConstPtr& odom_msg, const sensor_msgs::PointCloud2ConstPtr& pcd_msg)
 {
   m_current_frame = PosePcd(*odom_msg, *pcd_msg, m_current_keyframe_idx); //to be checked if keyframe or not
 
@@ -63,7 +63,7 @@ void FastLioLocalizationQnClass::odomPcdCallback(const nav_msgs::OdometryConstPt
   return;
 }
 
-void FastLioLocalizationQnClass::matchingTimerFunc(const ros::TimerEvent& event)
+void FastLioLocalizationScQnClass::matchingTimerFunc(const ros::TimerEvent& event)
 {
   if (!m_init) return;
 
@@ -78,8 +78,8 @@ void FastLioLocalizationQnClass::matchingTimerFunc(const ros::TimerEvent& event)
   if (not_proc_key_copy_.idx==0 || not_proc_key_copy_.processed) return; //already processed or initial keyframe
 
   //// 2. detect match and calculate TF
-  // from not_proc_key_copy_ keyframe to map (saved keyframes) in threshold radius, get the closest keyframe
-  int closest_keyframe_idx_ = getClosestKeyframeIdx(not_proc_key_copy_, m_saved_map);
+  // from not_proc_key_copy_ keyframe to map (saved keyframes) in threshold radius, get the loop candidate keyframe using ScanContext
+  int closest_keyframe_idx_ = getLoopCandidateKeyframeIdx(not_proc_key_copy_);
   if (closest_keyframe_idx_ >= 0) //if exists
   {
     // Quatro + NANO-GICP to check match (from current_keyframe to closest keyframe in saved map)

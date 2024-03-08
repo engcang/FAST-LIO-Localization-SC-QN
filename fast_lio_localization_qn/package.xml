@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <package>
-  <name>fast_lio_localization_qn</name>
+  <name>fast_lio_localization_sc_qn</name>
   <version>0.0.0</version>
 
   <description>
-    This repository is a map-based localization implementation combining FAST-LIO2 with Quatro+Nano-GICP
+    This repository is a map-based localization implementation combining FAST-LIO2 with Quatro, Nano-GICP, and ScanContext
   </description>
   <maintainer email="eungchang_mason@kaist.ac.kr">Eungchang Mason Lee</maintainer>
 

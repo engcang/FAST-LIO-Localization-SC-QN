@@ -1,11 +1,10 @@
-#ifndef FAST_LIO_LOCALIZATION_QN_MAIN_H
-#define FAST_LIO_LOCALIZATION_QN_MAIN_H
+#ifndef FAST_LIO_LOCALIZATION_SC_QN_MAIN_H
+#define FAST_LIO_LOCALIZATION_SC_QN_MAIN_H
 
 ///// coded headers
 #include "utilities.h"
 ///// common headers
-#include <time.h>
-#include <math.h>
+#include <ctime>
 #include <cmath>
 #include <chrono> //time check
 #include <vector>
@@ -41,6 +40,8 @@
 #include <nano_gicp/nano_gicp.hpp>
 ///// Quatro
 #include <quatro/quatro_module.h>
+///// ScanContext
+#include "Scancontext.h"
 ///// Eigen
 #include <Eigen/Eigen> // whole Eigen library: Sparse(Linearalgebra) + Dense(Core+Geometry+LU+Cholesky+SVD+QR+Eigenvalues)
 
@@ -70,7 +71,7 @@ struct PosePcdReduced
   PosePcdReduced(const geometry_msgs::PoseStamped& pose_in, const sensor_msgs::PointCloud2& pcd_in, const int& idx_in);
 };
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-class FastLioLocalizationQnClass
+class FastLioLocalizationScQnClass
 {
   private:
     ///// basic params
@@ -86,6 +87,7 @@ class FastLioLocalizationQnClass
     pcl::VoxelGrid<PointType> m_voxelgrid;
     nano_gicp::NanoGICP<PointType, PointType> m_nano_gicp;
     shared_ptr<quatro<PointType>> m_quatro_handler = nullptr;
+    SCManager m_sc_manager;
     bool m_enable_quatro = false;
     double m_keyframe_thr;
     double m_icp_score_thr;
@@ -112,14 +114,14 @@ class FastLioLocalizationQnClass
 
     ///// functions
   public:
-    FastLioLocalizationQnClass(const ros::NodeHandle& n_private);
-    ~FastLioLocalizationQnClass(){};
+    FastLioLocalizationScQnClass(const ros::NodeHandle& n_private);
+    ~FastLioLocalizationScQnClass(){};
   private:
     //methods
     void updateVisVars(const PosePcd& pose_pcd_in);
     void voxelizePcd(pcl::VoxelGrid<PointType>& voxelgrid, pcl::PointCloud<PointType>& pcd_in);
     bool checkIfKeyframe(const PosePcd& pose_pcd_in, const PosePcd& latest_pose_pcd);
-    int getClosestKeyframeIdx(const PosePcd& current_keyframe, const std::vector<PosePcdReduced>& saved_map);
+    int getLoopCandidateKeyframeIdx(const PosePcd& current_keyframe);
     Eigen::Matrix4d icpKeyToSubkeys(const PosePcd& current_keyframe, const int& closest_idx, const std::vector<PosePcdReduced>& keyframes, bool& if_converged, double& score);
     Eigen::Matrix4d coarseToFineKeyToKey(const PosePcd& current_keyframe, const int& closest_idx, const std::vector<PosePcdReduced>& keyframes, bool& if_converged, double& score);
     visualization_msgs::Marker getMatchMarker(const std::vector<std::pair<pcl::PointXYZ, pcl::PointXYZ>>& match_xyz_pairs);
