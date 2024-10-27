@@ -86,9 +86,8 @@ PcdPair MapMatcher::setSrcAndDstCloud(const PosePcd &query_keyframe,
     return {*voxelizePcd(src_out, voxel_res), *voxelizePcd(dst_accum, voxel_res)};
 }
 
-RegistrationOutput
-MapMatcher::icpAlignment(const pcl::PointCloud<PointType> &src,
-                         const pcl::PointCloud<PointType> &dst)
+RegistrationOutput MapMatcher::icpAlignment(const pcl::PointCloud<PointType> &src,
+                                            const pcl::PointCloud<PointType> &dst)
 {
     RegistrationOutput reg_output;
     aligned_.clear();
@@ -115,9 +114,8 @@ MapMatcher::icpAlignment(const pcl::PointCloud<PointType> &src,
     return reg_output;
 }
 
-RegistrationOutput
-MapMatcher::coarseToFineAlignment(const pcl::PointCloud<PointType> &src,
-                                  const pcl::PointCloud<PointType> &dst)
+RegistrationOutput MapMatcher::coarseToFineAlignment(const pcl::PointCloud<PointType> &src,
+                                                     const pcl::PointCloud<PointType> &dst)
 {
     RegistrationOutput reg_output;
     coarse_aligned_.clear();
