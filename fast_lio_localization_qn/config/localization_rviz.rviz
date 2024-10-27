@@ -123,8 +123,8 @@ Visualization Manager:
         - Alpha: 0.5
           Autocompute Intensity Bounds: true
           Autocompute Value Bounds:
-            Max Value: 14.55298137664795
-            Min Value: 0.8369685411453247
+            Max Value: 1.0725010633468628
+            Min Value: -14.444677352905273
             Value: true
           Axis: Z
           Channel Name: intensity
@@ -348,7 +348,7 @@ Visualization Manager:
           Color: 237; 212; 0
           Color Transformer: FlatColor
           Decay Time: 0
-          Enabled: false
+          Enabled: true
           Invert Rainbow: false
           Max Color: 255; 255; 255
           Min Color: 0; 0; 0
@@ -356,14 +356,14 @@ Visualization Manager:
           Position Transformer: XYZ
           Queue Size: 10
           Selectable: true
-          Size (Pixels): 1
+          Size (Pixels): 2
           Size (m): 0.11999999731779099
-          Style: Flat Squares
+          Style: Points
           Topic: /coarse_aligned_quatro
           Unreliable: false
           Use Fixed Frame: true
           Use rainbow: true
-          Value: false
+          Value: true
         - Alpha: 1
           Autocompute Intensity Bounds: true
           Autocompute Value Bounds:
@@ -422,7 +422,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 263.6473083496094
+      Distance: 136.049560546875
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -438,9 +438,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.7853981852531433
+      Pitch: 0.5397971272468567
       Target Frame: robot
-      Yaw: 0.7853981852531433
+      Yaw: 0.7835971713066101
     Saved: ~
 Window Geometry:
   Displays:
@@ -458,5 +458,5 @@ Window Geometry:
   Views:
     collapsed: true
   Width: 1848
-  X: 2866
-  Y: 291
+  X: 72
+  Y: 1107
